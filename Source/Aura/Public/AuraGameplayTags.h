@@ -34,7 +34,13 @@ public:
 	FGameplayTag AttributesSecondaryManaRegeneration;
 	FGameplayTag AttributesSecondaryMaxHealth;
 	FGameplayTag AttributesSecondaryMaxMana;
-protected:
+
+	FGameplayTag InputTagLMB;
+	FGameplayTag InputTagRMB;
+	FGameplayTag InputTag1;
+	FGameplayTag InputTag2;
+	FGameplayTag InputTag3;
+	FGameplayTag InputTag4;
 private:
 	static FAuraGameplayTags GameplayTags;
 };
