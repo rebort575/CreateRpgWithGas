@@ -12,6 +12,7 @@ class UAuraInputConfig;
 class UInputMappingContext;
 class UInputAction;
 class IEnemyInterface;
+class USplineComponent;
 /**
  * 
  */
@@ -24,6 +25,8 @@ public:
 	AAuraPlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+
+	void AutoRun();
 
 protected:
 	virtual void BeginPlay() override;
@@ -52,4 +55,18 @@ private:
 
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 	UAuraAbilitySystemComponent* GetASC();
+
+	FHitResult CursorHit;
+	
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 };
