@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ActorProjectile.generated.h"
+#include "AuraProjectile.generated.h"
 
 class UProjectileMovementComponent;
 class USphereComponent;
 
 UCLASS()
-class AURA_API AActorProjectile : public AActor
+class AURA_API AAuraProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AActorProjectile();
+	AAuraProjectile();
 
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 protected:
