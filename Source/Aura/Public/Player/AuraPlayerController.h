@@ -30,7 +30,7 @@ public:
 	void AutoRun();
 
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, bool bBlocked, bool bCriticalHit, ACharacter* TargetCharacter);
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
