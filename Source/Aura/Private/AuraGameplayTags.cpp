@@ -15,12 +15,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Primary.Strength"),
 		FString("Increases physical damage")
 	);
-	
+
 	GameplayTags.AttributesPrimaryIntelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Intelligence"),
 		FString("Increase magic damage")
 	);
-	
+
 	GameplayTags.AttributesPrimaryResilience = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Resilience"),
 		FString("Increase Armor and Armor Penetration")
@@ -77,7 +77,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxHealth"),
 		FString("Maximum amount of Health obtainable")
 	);
-	
+
 	GameplayTags.AttributesSecondaryMaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxMana"),
 		FString("Maximum amount of Mana obtainable")
@@ -130,7 +130,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	/**
 	 * Damage Types
 	 */
-	
+
 	GameplayTags.DamageFire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Fire"),
 		FString("Fire Damage Type")
@@ -160,7 +160,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance to Arcane damage")
 	);
 
-	GameplayTags.AttributesResistanceLighting= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.AttributesResistanceLighting = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistance.Lighting"),
 		FString("Resistance to Lighting damage")
 	);
@@ -182,5 +182,28 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.DamageLighting, GameplayTags.AttributesResistanceLighting);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.DamageArcane, GameplayTags.AttributesResistanceArcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.DamagePhysical, GameplayTags.AttributesResistancePhysical);
-	
+
+	/**
+	 * Abilities
+	 */
+	GameplayTags.AbilitiesAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Attack"),
+		FString("Attack Ability Tag")
+	);
+
+	/**
+	 * Montage
+	 */
+	GameplayTags.MontageAttackWeapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.Weapon"),
+		FString("Weapon")
+	);
+	GameplayTags.MontageAttackLeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.LeftHand"),
+		FString("Left Hand")
+	);
+	GameplayTags.MontageAttackRightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.RightHand"),
+		FString("Right Hand")
+	);
 }

@@ -55,6 +55,13 @@ public:
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 	FGameplayTag EffectHitReact;
+
+	FGameplayTag AbilitiesAttack;
+
+	FGameplayTag MontageAttackWeapon;
+	FGameplayTag MontageAttackRightHand;
+	FGameplayTag MontageAttackLeftHand;
+	
 private:
 	static FAuraGameplayTags GameplayTags;
 };
