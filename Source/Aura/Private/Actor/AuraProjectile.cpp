@@ -63,15 +63,11 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	auto* Causer = DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser();
-	if (DamageEffectSpecHandle.Data.IsValid() /*&& DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor*/)
+	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
 	{
-		if (Causer == OtherActor)
-		{
-			return;
-		}
+		return;
 	}
-	if(!UAuraAbilitySystemLibrary::IsNotFriend(Causer, OtherActor))
+	if(!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
 	{
 		return;
 	}

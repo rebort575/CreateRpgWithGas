@@ -85,6 +85,10 @@ int32 AAuraEnemy::GetPlayerLevel()
 void AAuraEnemy::Die()
 {
 	SetLifeSpan(LifeSpan);
+	if (AuraAIController)
+	{
+		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+	}
 	Super::Die();
 }
 
@@ -131,7 +135,8 @@ void AAuraEnemy::BeginPlay()
 		OnHealthChanged.Broadcast(AuraAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraAS->GetMaxHealth());
 
-		AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().EffectHitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().EffectHitReact,
+		                                                 EGameplayTagEventType::NewOrRemoved).AddUObject(
 			this,
 			&AAuraEnemy::HitReactTagChanged
 		);
