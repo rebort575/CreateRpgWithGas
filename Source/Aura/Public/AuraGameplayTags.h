@@ -52,16 +52,23 @@ public:
 	FGameplayTag DamageLighting;
 	FGameplayTag DamageArcane;
 	FGameplayTag DamagePhysical;
-	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 	FGameplayTag EffectHitReact;
 
 	FGameplayTag AbilitiesAttack;
+	FGameplayTag AbilitiesSummon;
 
-	FGameplayTag MontageAttackWeapon;
-	FGameplayTag MontageAttackRightHand;
-	FGameplayTag MontageAttackLeftHand;
+	FGameplayTag CombatSocketWeapon;
+	FGameplayTag CombatSocketRightHand;
+	FGameplayTag CombatSocketLeftHand;
+	FGameplayTag CombatSocketTail;
 	
+	FGameplayTag MontageAttack1;
+	FGameplayTag MontageAttack2;
+	FGameplayTag MontageAttack3;
+	FGameplayTag MontageAttack4;
+	
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 private:
 	static FAuraGameplayTags GameplayTags;
 };
