@@ -3,9 +3,9 @@
   <component name="UserContentModel">
     <attachedFolders />
     <explicitIncludes>
-      <Path>Source/Aura/AuraLogChannels.cpp</Path>
-      <Path>Source/Aura/AuraLogChannels.h</Path>
     </explicitIncludes>
-    <explicitExcludes />
+    <explicitExcludes>
+      <Path>Intermediate/ProjectFiles</Path>
+    </explicitExcludes>
   </component>
 </project>

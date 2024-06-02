@@ -10,6 +10,8 @@
 class UAbilitySystemComponent;
 class UAttributeSet;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangeSignature, int32, NewLevel);
+
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
 {
@@ -52,6 +54,7 @@ public:
 	virtual void BroadcastInitialValues();
 
 	virtual void BindCallbacksToDependencies();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;

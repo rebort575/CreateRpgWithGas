@@ -153,21 +153,50 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(
 				Props.SourceCharacter, LocalIncomingXP + CurrentXP);
 
-			if (NewLevel > CurrentLevel)
+			const int32 NumLevelUps = NewLevel - CurrentLevel;
+			if (NumLevelUps > 0)
 			{
-				int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter, CurrentLevel);
-				int32 SpellPointReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter, CurrentLevel);
-
-				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NewLevel - CurrentLevel);
-				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointReward);
-				IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointReward);
+				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+				int32 AttributePointsReward = 0;
+				int32 SpellPointsReward = 0;
+				for (int i = 0; i < NumLevelUps; ++i)
+				{
+					AttributePointsReward += IPlayerInterface::Execute_GetAttributePointReward(
+						Props.SourceCharacter, CurrentLevel + i);
+					SpellPointsReward += IPlayerInterface::Execute_GetSpellPointReward(
+						Props.SourceCharacter, CurrentLevel + i);
+				}
+				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+				IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
 				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 
 				SetHealth(GetMaxHealth());
 				SetMana(GetMaxMana());
+				UE_LOG(LogAura, Error, TEXT("In Pre MaxHealth:%.2f, MaxMana:%.2f"), GetMaxHealth(), GetMaxMana());
+
+				bTopOffHealth = true;
+				bTopOffMana = true;
 			}
 			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 		}
+	}
+}
+
+void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	if (Attribute == GetMaxHealthAttribute() && bTopOffHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bTopOffHealth = false;
+		UE_LOG(LogAura, Error, TEXT("In Post MaxHealth:%.2f, MaxMana:%.2f"), GetMaxHealth(), GetMaxMana());
+	}
+
+	if (Attribute == GetMaxManaAttribute() && bTopOffMana)
+	{
+		SetMana(GetMaxMana());
+		bTopOffMana = false;
+		UE_LOG(LogAura, Error, TEXT("In Post MaxHealth:%.2f, MaxMana:%.2f"), GetMaxHealth(), GetMaxMana());
 	}
 }
 

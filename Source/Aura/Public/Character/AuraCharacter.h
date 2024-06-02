@@ -34,23 +34,26 @@ public:
 	virtual void AddToPlayerLevel_Implementation(int32 InLevel) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
 	virtual void AddToSpellPoints_Implementation(int32 InSpellPoints) override;
+	virtual int32 GetAttributePoints_Implementation() override;
+	virtual int32 GetSpellPoints_Implementation() override;
 	/** end Player Interface */
-	
+
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() override;
 	/** end Combat Interface */
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraSystem;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
-	
+
 	virtual void InitAbilityActorInfo() override;
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastLevelUpParticles()const;
+	void MulticastLevelUpParticles() const;
 };
