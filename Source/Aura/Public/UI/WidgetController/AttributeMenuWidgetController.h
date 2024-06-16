@@ -32,12 +32,12 @@ public:
 	FOnPlayerStatChangeSignature SpellPointsChangedDelegate;
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateAttribute(const FGameplayTag& AttributeTag);
+	void UpdateAttribute(const FGameplayTag &AttributeTag);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
 
 private:
-	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute);
+	void BroadcastAttributeInfo(const FGameplayTag &AttributeTag, const FGameplayAttribute &Attribute);
 };
