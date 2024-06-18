@@ -4,6 +4,8 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
 #include "AuraAbilityTypes.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/CombatInterface.h"
@@ -172,6 +174,79 @@ void UAuraAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle &Ef
 	}
 }
 
+bool UAuraAbilitySystemLibrary::IsSuccessfulDebuff(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->IsSuccessfulDebuff();
+	}
+	return false;
+}
+
+float UAuraAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->GetDebuffDamage();
+	}
+	return 0.f;
+}
+
+float UAuraAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->GetDebuffDuration();
+	}
+	return 0.f;
+}
+
+float UAuraAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->GetDebuffFrequency();
+	}
+	return 0.f;
+}
+
+FGameplayTag UAuraAbilitySystemLibrary::GetDamageType(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		if (AuraGameplayEffectContext->GetDamageType().IsValid())
+		{
+			return *AuraGameplayEffectContext->GetDamageType().Get();
+		}
+	}
+	return FGameplayTag();
+}
+
+FVector UAuraAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->GetDeathImpulse();
+	}
+	return FVector::ZeroVector;
+}
+
+FVector UAuraAbilitySystemLibrary::GetKnockbackForce(const FGameplayEffectContextHandle &EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->GetKncokbackForce();
+	}
+	return FVector::ZeroVector;
+}
+
 void UAuraAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle &EffectContextHandle,
                                                  bool bInIsCriticalHit)
 {
@@ -214,6 +289,76 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject *WorldC
 	}
 }
 
+void UAuraAbilitySystemLibrary::SetIsSuccessfulDebuff(FGameplayEffectContextHandle &EffectContextHandle,
+                                                      bool InSuccessfulDebuff)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetIsSuccessfulDebuff(InSuccessfulDebuff);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDebuffDamage(FGameplayEffectContextHandle &EffectContextHandle, float InDebuffDamage)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetDebuffDamage(InDebuffDamage);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDebuffDuration(FGameplayEffectContextHandle &EffectContextHandle,
+                                                  float InDebuffDuration)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetDebuffDuration(InDebuffDuration);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDebuffFrequency(FGameplayEffectContextHandle &EffectContextHandle,
+                                                   float InDebuffFrequency)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetDebuffFrequency(InDebuffFrequency);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDamageType(FGameplayEffectContextHandle &EffectContextHandle,
+                                              const FGameplayTag &InDamageType)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		const TSharedPtr<FGameplayTag> DamageType = MakeShared<FGameplayTag>(InDamageType);
+		AuraGameplayEffectContext->SetDamageType(DamageType);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDeathImpulse(FGameplayEffectContextHandle &EffectContextHandle,
+                                                const FVector &InImpulse)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetDeathImpulse(InImpulse);
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetKnockbackForce(FGameplayEffectContextHandle &EffectContextHandle,
+                                                  const FVector &InForce)
+{
+	if (FAuraGameplayEffectContext *AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext *>(
+		EffectContextHandle.Get()))
+	{
+		AuraGameplayEffectContext->SetKnockbackForce(InForce);
+	}
+}
+
 bool UAuraAbilitySystemLibrary::IsNotFriend(AActor *FirstActor, AActor *SecondActor)
 {
 	const bool bFirstIsPlayer = FirstActor->ActorHasTag(FName("Player"));
@@ -232,4 +377,32 @@ int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject *Worl
 
 	const FCharacterClassDefaultInfo &Info = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
 	return static_cast<int32>(Info.XPReward.GetValueAtLevel(CharacterLevel));
+}
+
+FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams &DamageEffectParams)
+{
+	const FAuraGameplayTags &GameplayTags = FAuraGameplayTags::Get();
+	const AActor *SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+
+	FGameplayEffectContextHandle EffectContext = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(SourceAvatarActor);
+	SetDeathImpulse(EffectContext, DamageEffectParams.DeathImpulse);
+	SetKnockbackForce(EffectContext, DamageEffectParams.KnockbackForce);
+
+	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(
+		DamageEffectParams.DamageGameplayEffectClass,
+		DamageEffectParams.AbilityLevel, EffectContext);
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageEffectParams.DamageType,
+	                                                              DamageEffectParams.BaseDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.DebuffChance,
+	                                                              DamageEffectParams.DebuffChance);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.DebuffDamage,
+	                                                              DamageEffectParams.DebuffDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.DebuffDuration,
+	                                                              DamageEffectParams.DebuffDuration);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.DebuffFrequency,
+	                                                              DamageEffectParams.DebuffFrequency);
+	DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	return EffectContext;
 }

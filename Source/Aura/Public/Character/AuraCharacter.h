@@ -21,7 +21,7 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase, public IPlayerInterfa
 public:
 	AAuraCharacter();
 
-	virtual void PossessedBy(AController* NewController) override;
+	virtual void PossessedBy(AController *NewController) override;
 	virtual void OnRep_PlayerState() override;
 
 	/** Player Interface */
@@ -37,6 +37,7 @@ public:
 	virtual int32 GetAttributePoints_Implementation() override;
 	virtual int32 GetSpellPoints_Implementation() override;
 	/** end Player Interface */
+
 
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() override;

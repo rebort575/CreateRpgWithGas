@@ -187,6 +187,42 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 
 	/**
+	 * Debuffs
+	 */
+	GameplayTags.DebuffArcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Arcane"),
+		FString("Debuff to Arcane damage")
+		);
+	GameplayTags.DebuffBurn = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Burn"),
+		FString("Debuff to Fire damage")
+		);
+	GameplayTags.DebuffPhysical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Physical"),
+		FString("Debuff Physical damage")
+		);
+	GameplayTags.DebuffStun = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Stun"),
+		FString("Debuff to Lightning damage")
+		);
+
+	GameplayTags.DebuffChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Chance"),
+		FString("Debuff Chance")
+		);
+	GameplayTags.DebuffDamage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Damge"),
+		FString("Debuff damage")
+		);
+	GameplayTags.DebuffDuration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Duration"),
+		FString("Debuff Duration")
+		);
+	GameplayTags.DebuffFrequency = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Frequency"),
+		FString("Debuff Frequency")
+		);
+	/**
 	 * Meta Attribute
 	 */
 	GameplayTags.AttributeMetaIncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -202,6 +238,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.DamageArcane, GameplayTags.AttributesResistanceArcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.DamagePhysical, GameplayTags.AttributesResistancePhysical);
 
+	/**
+	* Map of Damage Types to Debuffs 
+	*/
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.DamageArcane, GameplayTags.DebuffArcane);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.DamageFire, GameplayTags.DebuffBurn);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.DamageLighting, GameplayTags.DebuffStun);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.DamagePhysical, GameplayTags.DebuffPhysical);
 	/**
 	 * Abilities
 	 */

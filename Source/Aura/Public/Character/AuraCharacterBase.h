@@ -9,6 +9,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UDebuffNiagaraComponent;
 class UNiagaraSystem;
 class UGameplayAbility;
 class UGameplayEffect;
@@ -24,30 +25,36 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 public:
 	AAuraCharacterBase();
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAbilitySystemComponent *GetAbilitySystemComponent() const override;
 
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	UAttributeSet *GetAttributeSet() const { return AttributeSet; }
 
-	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual UAnimMontage *GetHitReactMontage_Implementation() override;
 
 	/** Combat Interface */
-	virtual void Die() override;
-	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
+	virtual void Die(const FVector &DeathImpulse) override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag &MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
-	virtual AActor* GetAvatar_Implementation() override;
+	virtual AActor *GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
-	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
-	virtual FTaggedMontage GetTagMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
+	virtual UNiagaraSystem *GetBloodEffect_Implementation() override;
+	virtual FTaggedMontage GetTagMontageByTag_Implementation(const FGameplayTag &MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual FOnASCRegistered GetOnAscRegisteredDelegate() override;
+	virtual FOnDeath *GetOnDeathDelegate() override;
 	/** end Combat Interface */
+	FOnASCRegistered OnAscRegistered;
+
+	FOnDeath OnDeath;
 
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastHandleDeath();
+	virtual void MulticastHandleDeath(const FVector &DeathImpulse);
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -64,7 +71,7 @@ protected:
 	FName TailSocketName;
 
 	bool bDead = false;
-	
+
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
@@ -92,30 +99,33 @@ protected:
 	void Dissolve();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
-	
+	void StartDissolveTimeline(UMaterialInstanceDynamic *DynamicMaterialInstance);
+
 	UFUNCTION(BlueprintImplementableEvent)
-	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
-	
+	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic *DynamicMaterialInstance);
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UNiagaraSystem* BloodEffect;
+	UNiagaraSystem *BloodEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USoundBase* DeathSound;
+	USoundBase *DeathSound;
 
 	/**
 	 * Minions
 	 */
 	int32 MinionCount = 0;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Abilities")

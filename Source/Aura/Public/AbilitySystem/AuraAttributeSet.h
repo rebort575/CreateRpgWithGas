@@ -26,28 +26,28 @@ struct FEffectProperties
 	FGameplayEffectContextHandle EffectContextHandle;
 
 	UPROPERTY()
-	UAbilitySystemComponent* SourceASC = nullptr;
+	UAbilitySystemComponent *SourceASC = nullptr;
 
 	UPROPERTY()
-	AActor* SourceAvatarActor = nullptr;
+	AActor *SourceAvatarActor = nullptr;
 
 	UPROPERTY()
-	AController* SourceController = nullptr;
+	AController *SourceController = nullptr;
 
 	UPROPERTY()
-	ACharacter* SourceCharacter = nullptr;
+	ACharacter *SourceCharacter = nullptr;
 
 	UPROPERTY()
-	UAbilitySystemComponent* TargetASC = nullptr;
+	UAbilitySystemComponent *TargetASC = nullptr;
 
 	UPROPERTY()
-	AActor* TargetAvatarActor = nullptr;
+	AActor *TargetAvatarActor = nullptr;
 
 	UPROPERTY()
-	AController* TargetController = nullptr;
+	AController *TargetController = nullptr;
 
 	UPROPERTY()
-	ACharacter* TargetCharacter = nullptr;
+	ACharacter *TargetCharacter = nullptr;
 };
 
 // typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
@@ -64,11 +64,11 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 	UAuraAttributeSet();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+	virtual void PreAttributeChange(const FGameplayAttribute &Attribute, float &NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData &Data) override;
+	virtual void PostAttributeChange(const FGameplayAttribute &Attribute, float OldValue, float NewValue) override;
 
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
@@ -178,71 +178,75 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingXP);
 
 	UFUNCTION()
-	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
+	void OnRep_Health(const FGameplayAttributeData &OldHealth) const;
 
 	UFUNCTION()
-	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
+	void OnRep_MaxHealth(const FGameplayAttributeData &OldMaxHealth) const;
 
 	UFUNCTION()
-	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
+	void OnRep_Mana(const FGameplayAttributeData &OldMana) const;
 
 	UFUNCTION()
-	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+	void OnRep_MaxMana(const FGameplayAttributeData &OldMaxMana) const;
 
 	UFUNCTION()
-	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
+	void OnRep_Strength(const FGameplayAttributeData &OldStrength) const;
 
 	UFUNCTION()
-	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
+	void OnRep_Intelligence(const FGameplayAttributeData &OldIntelligence) const;
 
 	UFUNCTION()
-	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
+	void OnRep_Resilience(const FGameplayAttributeData &OldResilience) const;
 
 	UFUNCTION()
-	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
+	void OnRep_Vigor(const FGameplayAttributeData &OldVigor) const;
 
 	UFUNCTION()
-	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+	void OnRep_Armor(const FGameplayAttributeData &OldArmor) const;
 
 	UFUNCTION()
-	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
+	void OnRep_ArmorPenetration(const FGameplayAttributeData &OldArmorPenetration) const;
 
 	UFUNCTION()
-	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+	void OnRep_BlockChance(const FGameplayAttributeData &OldBlockChance) const;
 
 	UFUNCTION()
-	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const;
+	void OnRep_CriticalHitChance(const FGameplayAttributeData &OldCriticalHitChance) const;
 
 	UFUNCTION()
-	void OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const;
+	void OnRep_CriticalHitDamage(const FGameplayAttributeData &OldCriticalHitDamage) const;
 
 	UFUNCTION()
-	void OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const;
+	void OnRep_CriticalHitResistance(const FGameplayAttributeData &OldCriticalHitResistance) const;
 
 	UFUNCTION()
-	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
+	void OnRep_HealthRegeneration(const FGameplayAttributeData &OldHealthRegeneration) const;
 
 	UFUNCTION()
-	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
+	void OnRep_ManaRegeneration(const FGameplayAttributeData &OldManaRegeneration) const;
 
 	UFUNCTION()
-	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
+	void OnRep_FireResistance(const FGameplayAttributeData &OldFireResistance) const;
 
 	UFUNCTION()
-	void OnRep_LightingResistance(const FGameplayAttributeData& OldLightingResistance) const;
+	void OnRep_LightingResistance(const FGameplayAttributeData &OldLightingResistance) const;
 
 	UFUNCTION()
-	void OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const;
+	void OnRep_ArcaneResistance(const FGameplayAttributeData &OldArcaneResistance) const;
 
 	UFUNCTION()
-	void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const;
+	void OnRep_PhysicalResistance(const FGameplayAttributeData &OldPhysicalResistance) const;
 
 private:
-	static void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
+	void HandleIncomingDamage(const FEffectProperties &Props);
+	void HandleIncomingXP(const FEffectProperties &Props);
+	void Debuff(const FEffectProperties &Props);
 
-	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit);
+	static void SetEffectProperties(const FGameplayEffectModCallbackData &Data, FEffectProperties &Props);
 
-	void SendXPEvent(const FEffectProperties& Props);
+	void ShowFloatingText(const FEffectProperties &Props, float Damage, bool bBlockedHit, bool bCriticalHit);
+
+	void SendXPEvent(const FEffectProperties &Props);
 
 	bool bTopOffHealth = false;
 	bool bTopOffMana = false;

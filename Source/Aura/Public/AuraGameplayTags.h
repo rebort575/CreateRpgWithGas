@@ -40,6 +40,16 @@ public:
 	FGameplayTag AttributesResistanceArcane;
 	FGameplayTag AttributesResistancePhysical;
 
+	FGameplayTag DebuffBurn;
+	FGameplayTag DebuffStun;
+	FGameplayTag DebuffArcane;
+	FGameplayTag DebuffPhysical;
+
+	FGameplayTag DebuffChance;
+	FGameplayTag DebuffDamage;
+	FGameplayTag DebuffDuration;
+	FGameplayTag DebuffFrequency;
+
 	FGameplayTag AttributeMetaIncomingXP;
 
 	FGameplayTag InputTagLMB;
@@ -90,6 +100,7 @@ public:
 	FGameplayTag MontageAttack4;
 
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	TMap<FGameplayTag, FGameplayTag> DamageTypeToDebuffs;
 
 private:
 	static FAuraGameplayTags GameplayTags;

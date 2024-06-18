@@ -15,6 +15,7 @@ class UWidgetComponent;
  * 
  */
 class UBehaviorTree;
+
 UCLASS()
 class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
@@ -23,27 +24,27 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 public:
 	AAuraEnemy();
 
-	void PossessedBy(AController* NewController) override;
+	virtual void PossessedBy(AController *NewController) override;
 	/** - Begin Enemy Interface. */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
-	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual void SetCombatTarget_Implementation(AActor *InCombatTarget) override;
 
-	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual AActor *GetCombatTarget_Implementation() const override;
 	/** - End Enemy Interface. */
 
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector &DeathImpulse) override;
 	/** end Combat Interface*/
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
-	
+
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
-	
+
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
@@ -57,6 +58,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category="Combat")
 	TObjectPtr<AActor> CombatTarget;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
@@ -74,4 +76,3 @@ protected:
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
 };
-
