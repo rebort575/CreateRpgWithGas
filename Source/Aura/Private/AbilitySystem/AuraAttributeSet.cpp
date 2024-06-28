@@ -334,9 +334,14 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties &Props)
 		}
 		else
 		{
-			FGameplayTagContainer TagContainer;
-			TagContainer.AddTag(FAuraGameplayTags::Get().EffectHitReact);
-			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			if (Props.TargetCharacter->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsInBeingShockLoop(
+				Props.TargetCharacter))
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().EffectHitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+
 
 			const FVector KnockbackForce = UAuraAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
 			if (!KnockbackForce.IsNearlyZero())
@@ -409,17 +414,32 @@ void UAuraAttributeSet::Debuff(const FEffectProperties &Props)
 	const float DebuffDuration = UAuraAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
 	const float DebuffFrequency = UAuraAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
 
-	FString DebuffName = FString::Printf(TEXT("DynamicDEbuff_%s"), *DamageType.ToString());
+	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
 	UGameplayEffect *Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 	// Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypeToDebuffs[DamageType]);
 
+	const FGameplayTag &DebuffTag = GameplayTags.DamageTypeToDebuffs[DamageType];
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
 	UTargetTagsGameplayEffectComponent &Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
-	TagContainer.Added.AddTag(GameplayTags.DamageTypeToDebuffs[DamageType]);
-	TagContainer.CombinedTags.AddTag(GameplayTags.DamageTypeToDebuffs[DamageType]);
+	TagContainer.Added.AddTag(DebuffTag);
+	// TagContainer.CombinedTags.AddTag(DebuffTag);
+	if (DebuffTag.MatchesTagExact(GameplayTags.DebuffStun))
+	{
+		TagContainer.Added.AddTag(GameplayTags.PlayerBlockCursorTrace);
+		// TagContainer.CombinedTags.AddTag(GameplayTags.PlayerBlockCursorTrace);
+
+		TagContainer.Added.AddTag(GameplayTags.PlayerBlockInputHeld);
+		// TagContainer.CombinedTags.AddTag(GameplayTags.PlayerBlockInputHeld);
+
+		TagContainer.Added.AddTag(GameplayTags.PlayerBlockInputPressed);
+		// TagContainer.CombinedTags.AddTag(GameplayTags.PlayerBlockInputPressed);
+
+		TagContainer.Added.AddTag(GameplayTags.PlayerBlockInputReleased);
+		// TagContainer.CombinedTags.AddTag(GameplayTags.PlayerBlockInputReleased);
+	}
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

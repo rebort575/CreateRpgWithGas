@@ -9,7 +9,9 @@
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -18,6 +20,10 @@ AAuraCharacterBase::AAuraCharacterBase()
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = FAuraGameplayTags::Get().DebuffBurn;
+
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffComponent");
+	StunDebuffComponent->SetupAttachment(GetRootComponent());
+	StunDebuffComponent->DebuffTag = FAuraGameplayTags::Get().DebuffStun;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
@@ -59,7 +65,37 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector &Deat
 
 	Dissolve();
 	bDead = true;
-	OnDeath.Broadcast(this);
+	StunDebuffComponent->Deactivate();
+	BurnDebuffComponent->Deactivate();
+	OnDeathDelegate.Broadcast(this);
+}
+
+void AAuraCharacterBase::OnRep_Stunned()
+{
+
+}
+
+void AAuraCharacterBase::OnRep_Burned()
+{
+}
+
+void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bIsStunned = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+}
+
+void AAuraCharacterBase::BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bIsBurned = NewCount > 0;
+}
+
+void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AAuraCharacterBase, bIsStunned);
+	DOREPLIFETIME(AAuraCharacterBase, bIsBurned);
+	DOREPLIFETIME(AAuraCharacterBase, bIsBeingShocked);
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -136,14 +172,29 @@ ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
-FOnASCRegistered AAuraCharacterBase::GetOnAscRegisteredDelegate()
+FOnASCRegistered &AAuraCharacterBase::GetOnAscRegisteredDelegate()
 {
 	return OnAscRegistered;
 }
 
-FOnDeath *AAuraCharacterBase::GetOnDeathDelegate()
+FOnDeathSignature &AAuraCharacterBase::GetOnDeathDelegate()
 {
-	return &OnDeath;
+	return OnDeathDelegate;
+}
+
+USkeletalMeshComponent *AAuraCharacterBase::GetWeapon_Implementation()
+{
+	return Weapon;
+}
+
+bool AAuraCharacterBase::IsInBeingShockLoop_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
+void AAuraCharacterBase::SetInBeingShockLoop_Implementation(bool bInShock)
+{
+	bIsBeingShocked = bInShock;
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()

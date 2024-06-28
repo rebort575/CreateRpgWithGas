@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UDamageTextComponent;
 class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
@@ -30,7 +31,8 @@ public:
 	void AutoRun();
 
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, bool bBlocked, bool bCriticalHit, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, bool bBlocked, bool bCriticalHit, ACharacter *TargetCharacter);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -50,11 +52,11 @@ private:
 	void ShiftReleased() { bShiftKeyDown = false; }
 	bool bShiftKeyDown = false;
 
-	void Move(const struct FInputActionValue& InputActionVal);
+	void Move(const struct FInputActionValue &InputActionVal);
 
 	void CursorTrace();
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
+	IEnemyInterface *LastActor;
+	IEnemyInterface *ThisActor;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -64,7 +66,7 @@ private:
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
-	UAuraAbilitySystemComponent* GetASC();
+	UAuraAbilitySystemComponent *GetASC();
 
 	FHitResult CursorHit;
 
@@ -76,6 +78,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;

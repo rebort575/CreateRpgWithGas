@@ -99,6 +99,11 @@ public:
 	FGameplayTag MontageAttack3;
 	FGameplayTag MontageAttack4;
 
+	FGameplayTag PlayerBlockInputPressed;
+	FGameplayTag PlayerBlockInputHeld;
+	FGameplayTag PlayerBlockInputReleased;
+	FGameplayTag PlayerBlockCursorTrace;
+
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	TMap<FGameplayTag, FGameplayTag> DamageTypeToDebuffs;
 

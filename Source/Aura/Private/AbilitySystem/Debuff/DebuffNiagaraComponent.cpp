@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 
 UDebuffNiagaraComponent::UDebuffNiagaraComponent()
@@ -34,12 +35,14 @@ void UDebuffNiagaraComponent::BeginPlay()
 	}
 	if (CombatInterface)
 	{
-		CombatInterface->GetOnDeathDelegate()->AddDynamic(this, &UDebuffNiagaraComponent::OnOwnerDeath);
+		CombatInterface->GetOnDeathDelegate().AddDynamic(this, &UDebuffNiagaraComponent::OnOwnerDeath);
 	}
 }
 
 void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
+	// UE_LOG(LogAura, Error, TEXT("UDebuffNiagaraComponent::DebuffTagChanged HasAuthority %d"),
+	// GetOwner()->HasAuthority())
 	if (IsValid(GetOwner()) /*Owner Valid*/
 		&& GetOwner()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(GetOwner()) /*Owner Alive*/
 		&& NewCount > 0)

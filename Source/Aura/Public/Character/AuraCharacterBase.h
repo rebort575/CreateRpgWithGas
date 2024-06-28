@@ -42,18 +42,42 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
-	virtual FOnASCRegistered GetOnAscRegisteredDelegate() override;
-	virtual FOnDeath *GetOnDeathDelegate() override;
+	virtual FOnASCRegistered &GetOnAscRegisteredDelegate() override;
+	virtual FOnDeathSignature &GetOnDeathDelegate() override;
+	virtual USkeletalMeshComponent *GetWeapon_Implementation() override;
+	virtual bool IsInBeingShockLoop_Implementation() const override;
+	virtual void SetInBeingShockLoop_Implementation(bool bInShock) override;
 	/** end Combat Interface */
 	FOnASCRegistered OnAscRegistered;
+	FOnDeathSignature OnDeathDelegate;
 
-	FOnDeath OnDeath;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector &DeathImpulse);
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;
+
+	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
+
+	UPROPERTY(ReplicatedUsing=OnRep_Burned, BlueprintReadOnly)
+	bool bIsBurned = false;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
+
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+
+	UFUNCTION()
+	virtual void OnRep_Burned();
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	virtual void BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,6 +95,9 @@ protected:
 	FName TailSocketName;
 
 	bool bDead = false;
+
+	UPROPERTY(EditAnywhere, Category="Combat")
+	float BaseWalkSpeed = 600.f;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -126,6 +153,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Abilities")

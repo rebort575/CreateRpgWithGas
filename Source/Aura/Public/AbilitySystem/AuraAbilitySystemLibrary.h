@@ -125,11 +125,25 @@ public:
 	                                       UPARAM(ref) TArray<AActor *> &ActorsToIgnore, float Radius,
 	                                       const FVector &SphereOrigin);
 
+
+	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static void GetClosestTargets(int MaxTargets, const TArray<AActor *> &Actors, TArray<AActor *> &OutClosestActors,
+	                              const FVector &Origin);
+
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool IsNotFriend(AActor *FirstActor, AActor *SecondActor);
 
 	static int32 GetXPRewardForClassAndLevel(const UObject *WorldContextObject, ECharacterClass CharacterClass,
 	                                         int32 CharacterLevel);
+
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static TArray<FVector> EvenlyRotatedVectors(const FVector &Forward, const FVector &Axis, float Spread,
+	                                            int32 NumVectors);
+
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static TArray<FRotator> EvenlySpacedRotators(const FVector &Forward, const FVector &Axis, float Spread,
+	                                             int32 NumRotators);
+
 	UFUNCTION(BlueprintCallable)
 	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams &DamageEffectParams);
 };
