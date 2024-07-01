@@ -87,6 +87,10 @@ public:
 	FGameplayTag AbilitiesFireBolt;
 	FGameplayTag AbilitiesLightningElectrocute;
 
+	FGameplayTag AbilitiesPassiveHaloOfProtection;
+	FGameplayTag AbilitiesPassiveLifeSiphon;
+	FGameplayTag AbilitiesPassiveManaSiphon;
+
 	FGameplayTag Cooldown_FireBolt;
 
 	FGameplayTag CombatSocketWeapon;
